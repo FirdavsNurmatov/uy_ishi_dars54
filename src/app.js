@@ -5,6 +5,7 @@ import { logger } from "./utils/index.js";
 import { down, up } from "../migrations/20241124102739_migrate_1.js";
 import {
   accountRouter,
+  passportRouter,
   paymentRouter,
   studentRotuter,
   teacherRotuter,
@@ -33,6 +34,7 @@ app.use("/payments", paymentRouter);
 app.use("/users", userRouter);
 app.use("/teachers", teacherRotuter);
 app.use("/students", studentRotuter);
+app.use("/api/v1", passportRouter);
 
 app.get("/api/v1/endup", async (req, res) => {
   try {
@@ -43,6 +45,14 @@ app.get("/api/v1/endup", async (req, res) => {
     logger.error(error);
     res.status(500).send(error.message);
   }
+});
+
+app.use("/error", (err, req, res, next) => {
+  if (err) {
+    logger.error(err);
+    return res.status(400).send(err.message);
+  }
+  res.status(500).send("Server has some problems!");
 });
 
 export default app;

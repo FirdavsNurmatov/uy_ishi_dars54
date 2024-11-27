@@ -15,7 +15,7 @@ import {
 export const userRouter = Router();
 
 userRouter.get("/", authGuard, getAllUsersCon);
-userRouter.get("/:email", authGuard, getUserByEmailCon);
+userRouter.get("/:email", getUserByEmailCon);
 userRouter.post(
   "/",
   authGuard,

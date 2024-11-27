@@ -3,7 +3,7 @@ import db from "../database/index.js";
 export const getAllUsersService = async () => {
   try {
     const allData = await db
-      .select("id, name, email, account_id, role, created_at, updated_at")
+      .select("id, name, email, account_id, role, created_at")
       .from("users");
 
     return allData;
@@ -14,17 +14,13 @@ export const getAllUsersService = async () => {
 
 export const getUserByEmailService = async (email) => {
   try {
-    const data = await db
-      .select("id, name, email, account_id, role, created_at, updated_at")
-      .from("users")
-      .where({ email })
-      .first();
+    const data = await db.select("*").from("users").where({ email }).first();
 
-    if (data.length >= 1) {
-      return { status: 200, msg: data };
+    if (!data) {
+      return { status: 404, msg: "User not found!" };
     }
 
-    return { status: 404, msg: "User not found!" };
+    return { status: 200, msg: data };
   } catch (error) {
     return error;
   }
